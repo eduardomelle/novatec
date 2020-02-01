@@ -45,7 +45,7 @@ const BookController = {
         const id = request.params.id
 
         repository.remove(id, (err, data) => {
-            response.json(data)
+            response.sendStatus(204)
         })
     }
 
