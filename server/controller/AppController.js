@@ -1,7 +1,6 @@
 const AppController = {
     index(request, response, next) {
-        response.status(201)
-        response.send('Hello Eduardo!')
+        response.status(201).send('Hello Eduardo!')
     }
 }
 
