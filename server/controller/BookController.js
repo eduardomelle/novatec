@@ -25,15 +25,19 @@ const BookController = {
     },
 
     create(request, response, next) {
-        response.status(201).send('create')
+        const body = request.body
+
+        repository.create(body, (err, data) => {
+            response.status(201).json(data)
+        })
     },
 
     update(request, response, next) {
         const id = request.params.id
-        const name = request.params.name
+        const body = request.body
 
-        repository.update(id, name, (err, data) => {
-            response.send('Atualizado com sucesso!')
+        repository.update(id, body, (err, data) => {
+            response.json(data)
         })
     },
 
@@ -41,7 +45,7 @@ const BookController = {
         const id = request.params.id
 
         repository.remove(id, (err, data) => {
-            response.send('Removido com sucesso!')
+            response.json(data)
         })
     }
 

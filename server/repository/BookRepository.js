@@ -16,16 +16,16 @@ const BookRepository = {
         db.collection('books').findOne(query, callback)
     },
 
-    create() {
-
+    create(data, callback) {
+        db.collection('books').insert(data, callback)
     },
 
-    update(id, name, callback) {
+    update(id, data, callback) {
         const query = {
             _id: db.ObjectId(id)
         }
 
-        db.collection('books').update(query, {$set:{name}}, {multi:false}, callback)
+        db.collection('books').update(query, {$set:{name: data.name, pages: data.pages}}, {multi:false}, callback)
     },
 
     remove(id, callback) {
