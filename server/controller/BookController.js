@@ -4,10 +4,13 @@ const BookController = {
 
     list(request, response, next) {
         const name = new RegExp('^' + request.query.name, 'i')
+        const query = request.query.name ? { name } : {}
+        /*
         const query = {}
         if (request.query.name) {
             query.name = name
         }
+        */
         repository.find(query, (err, data) => {
             response.json(data)
         })
