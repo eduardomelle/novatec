@@ -1,11 +1,19 @@
+const db = require('../config/mongo')
+
 const BookRepository = {
 
     find(callback) {
-        callback(null, [ { name: 'Node JS' }, { name: 'Python' } ])
+        db.collection('books').find({}, callback)
     },
 
     byId(id, callback) {
-        callback(null, { id: id, name: 'Java' })
+        console.log('ID => ' + id)
+
+        const query = {
+            _id: db.ObjectId(id)
+        }
+
+        db.collection('books').findOne(query, callback)
     }
 
 }
