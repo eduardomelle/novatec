@@ -3,14 +3,19 @@ const repository = require('../repository/BookRepository')
 const BookController = {
 
     list(request, response, next) {
-        repository.find((err, data) => {
+        const name = new RegExp('^' + request.query.name, 'i')
+        const query = {}
+        if (request.query.name) {
+            query.name = name
+        }
+        repository.find(query, (err, data) => {
             response.json(data)
         })
     },
 
     byId(request, response, next) {
         const id = request.params.id
-        
+
         repository.byId(id, (err, data) => {
             response.json(data)
         })

@@ -2,8 +2,8 @@ const db = require('../config/mongo')
 
 const BookRepository = {
 
-    find(callback) {
-        db.collection('books').find({}, callback)
+    find(query, callback) {
+        db.collection('books').find(query, callback)
     },
 
     byId(id, callback) {
