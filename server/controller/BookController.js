@@ -19,17 +19,20 @@ const BookController = {
         */
 
         /*
+        // CALLBACK
         repository.find(query, (err, data) => {
             response.json(data)
         })
         */
 
         /*
+        // PROMISE
         repository.findAsync(query)
         .then(data => response.json(data))
         .catch(err => next(err))
         */
 
+        // ASYNC-AWAIT
         try {
             const data = await repository.findAsync(query)
             response.json(data)
