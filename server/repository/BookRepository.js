@@ -14,6 +14,26 @@ const BookRepository = {
         }
 
         db.collection('books').findOne(query, callback)
+    },
+
+    create() {
+
+    },
+
+    update(id, name, callback) {
+        const query = {
+            _id: db.ObjectId(id)
+        }
+
+        db.collection('books').update(query, {$set:{name}}, {multi:false}, callback)
+    },
+
+    remove(id, callback) {
+        const query = {
+            _id: db.ObjectId(id)
+        }
+
+        db.collection('books').remove(query, callback)
     }
 
 }

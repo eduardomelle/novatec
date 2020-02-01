@@ -29,11 +29,20 @@ const BookController = {
     },
 
     update(request, response, next) {
-        response.send('update')
+        const id = request.params.id
+        const name = request.params.name
+
+        repository.update(id, name, (err, data) => {
+            response.send('Atualizado com sucesso!')
+        })
     },
 
     remove(request, response, next) {
-        response.send('remove')
+        const id = request.params.id
+
+        repository.remove(id, (err, data) => {
+            response.send('Removido com sucesso!')
+        })
     }
 
 }
