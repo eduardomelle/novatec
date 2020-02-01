@@ -15,8 +15,11 @@ describe('Books API', () => {
         .catch(err => done(err))
     })
 
-    it('GET /books should list', () => {
-        
+    it('GET /banana should return not found', () => {
+        return request.get('/banana')
+        .then(result => {
+            assert.equal(result.status, 404)
+        })
     })
 
 })
