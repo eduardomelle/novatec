@@ -22,4 +22,12 @@ describe('Books API', () => {
         })
     })
 
+    it('#app.notFound should return an Error object', () => {
+        let err = app.notFound()
+
+        assert.equal(err.status, 404)
+        assert.ok(typeof err, 'Error')
+        assert.ok(err instanceof Error)
+    })
+
 })

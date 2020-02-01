@@ -18,4 +18,10 @@ app.use((request, response, next) => {
     if (err.status !== 404) console.log(err.stack)
 })
 
+app.notFound = () => {
+    let err = new Error('não achei')
+    err.status = 404
+    return err
+}
+
 module.exports = app
