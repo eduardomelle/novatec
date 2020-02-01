@@ -25,7 +25,7 @@ const BookRepository = {
             _id: db.ObjectId(id)
         }
 
-        db.collection('books').update(query, {$set:{name: data.name, pages: data.pages}}, {multi:false}, callback)
+        db.collection('books').update(query, {$set:data}, callback)
     },
 
     remove(id, callback) {
