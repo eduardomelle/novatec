@@ -1,27 +1,55 @@
 const repository = require('../repository/BookRepository')
 
+const util = require('util')
+
+repository.findAsync = util.promisify(repository.find)
+repository.byId = util.promisify(repository.byId)
+
 const BookController = {
 
-    list(request, response, next) {
+    list: async function(request, response, next) {
         const name = new RegExp('^' + request.query.name, 'i')
         const query = request.query.name ? { name } : {}
+
         /*
         const query = {}
         if (request.query.name) {
             query.name = name
         }
         */
+
+        /*
         repository.find(query, (err, data) => {
             response.json(data)
         })
+        */
+
+        /*
+        repository.findAsync(query)
+        .then(data => response.json(data))
+        .catch(err => next(err))
+        */
+
+        try {
+            const data = await repository.findAsync(query)
+            response.json(data)
+        } catch(e) {
+            next(e)
+        }
     },
 
     byId(request, response, next) {
         const id = request.params.id
 
+        /*
         repository.byId(id, (err, data) => {
             response.json(data)
         })
+        */
+
+        repository.byId(id)
+        .then(data => response.json(data))
+        .catch(err => next(err))
     },
 
     create(request, response, next) {
