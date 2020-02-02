@@ -3,6 +3,7 @@ const repository = require('../repository/BookRepository')
 const util = require('util')
 
 repository.findAsync = util.promisify(repository.find)
+repository.countAsync = util.promisify(repository.count)
 repository.byId = util.promisify(repository.byId)
 
 const BookController = {
@@ -32,13 +33,29 @@ const BookController = {
         .catch(err => next(err))
         */
 
+       Promise.all([
+           repository.countAsync(query),
+           repository.findAsync(query)
+        ])
+        .then(([total, items]) => response.json({
+            total,
+            items
+        }))
+        .catch(err => next(err))
+
         // ASYNC-AWAIT
+        /*
         try {
             const data = await repository.findAsync(query)
-            response.json(data)
+            const total = await repository.countAsync(query)
+            response.json({
+                total,
+                items: data
+            })
         } catch(e) {
             next(e)
         }
+        */
     },
 
     byId(request, response, next) {

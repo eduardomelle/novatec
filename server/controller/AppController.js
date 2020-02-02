@@ -27,9 +27,9 @@ const AppController = {
             }
 
             const token = jwt.encode(payload, SECRET)
-
-            redis.set('token', token, 'EX', 60)
-
+            
+            setPersonRedis(token)
+            
             response.json({ token })
         } else {
             let err = new Error('saia daqui')
@@ -41,7 +41,6 @@ const AppController = {
     verifyJwt(request, response, next) {
         let token = request.headers.authorization || request.headers['x-jwt'] || request.query.token
         token = token.replace('Bearer ', '')
-        console.log('TOKEN => ' + token)
 
         try {
             const payload = jwt.decode(token, SECRET)
@@ -95,7 +94,31 @@ const AppController = {
 
             next()
         })
+    },
+    
+    getPersonRedis(request, response, next) {
+        let token = request.headers.authorization || request.headers['x-jwt'] || request.query.token
+        token = token.replace('Bearer ', '')
+
+        redis.get(token, (err, data) => {
+            if (data) {
+                const person = JSON.parse(data)
+                console.log(data)
+            }
+
+            next()
+        })
     }
+}
+
+function setPersonRedis(token) {
+    let person = {
+        token,
+        name: 'Eduardo Orlandi Melle',
+        mail: 'eduardomelle@gmail.com'
+    }
+    
+    redis.set(token, JSON.stringify(person), 'EX', 60)
 }
 
 module.exports = AppController

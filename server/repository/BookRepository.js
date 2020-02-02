@@ -6,6 +6,10 @@ const BookRepository = {
         db.collection('books').find(query, callback)
     },
 
+    count(query, callback) {
+        db.collection('books').count(query, callback)
+    },
+
     byId(id, callback) {
         console.log('ID => ' + id)
 
