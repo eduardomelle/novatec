@@ -52,13 +52,30 @@ const AppController = {
     },
 
     crawler(request, response, next) {
-        axios.get('https://economia.uol.com.br/cotacoes/cambio/')
+        axios.get('https://www.belezanaweb.com.br/')
         .then(result => {
-            const s = cheerio.load(result.data)
-            
-            console.log(s('section.currencies').text)
+            const $ = cheerio.load(result.data)
+            const $showcaseItem = $('.showcase-item')
 
-            response.send(result.data)
+            response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' })
+
+            response.write('<table border=1>')
+            response.write(`<tr>
+                    <th>Nome</th>
+                    <th>Preços</th>
+                </tr>`)
+
+            for (let i = 0; i < $showcaseItem.length; i++) {
+                const $price = $($($showcaseItem[i]).find('.item-price-value')).text()
+                const $name = $($($showcaseItem[i]).find('.showcase-item-name')).text()
+
+                response.write(`<tr>
+                        <td>${$name}</td>
+                        <td>${$price}</td>
+                    </tr>`)
+            }
+            
+            response.end('</table>')
         })
     }
 }
