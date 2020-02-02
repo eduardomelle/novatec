@@ -6,7 +6,14 @@ repository.findAsync = util.promisify(repository.find)
 repository.countAsync = util.promisify(repository.count)
 repository.byId = util.promisify(repository.byId)
 
+// const { check, validationResult } = require('express-validator')
+
 const BookController = {
+    /*
+    validate(request, response, next) {
+
+    },
+    */
 
     list: async function(request, response, next) {
         const name = new RegExp('^' + request.query.name, 'i')

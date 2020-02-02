@@ -6,6 +6,8 @@ const cheerio = require('cheerio')
 
 const redis = require('../config/redis')
 
+const path = require('path')
+
 const AppController = {
     index(request, response, next) {
         response.status(201).send('Hello Eduardo!')
@@ -111,7 +113,8 @@ const AppController = {
     },
 
     ajax(request, response, next) {
-        
+        let root = path.join(__dirname, '../../')
+        response.sendFile(`${root}/views/ajax.html`)
     }
 }
 

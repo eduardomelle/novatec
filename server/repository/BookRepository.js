@@ -1,8 +1,8 @@
 const db = require('../config/mongo')
+const model = require('../schema/BookSchema')
 const SIZE = 5
 
 const BookRepository = {
-
     find(query, page = 1, callback) {
         if (page == '' || page == 0) {
             page = 1
@@ -31,6 +31,9 @@ const BookRepository = {
     },
 
     create(data, callback) {
+        // const book = new model.Model(data)
+        // book.save(callback)
+        
         db.collection('books').insert(data, callback)
     },
 
@@ -49,7 +52,6 @@ const BookRepository = {
 
         db.collection('books').remove(query, callback)
     }
-
 }
 
 module.exports = BookRepository
