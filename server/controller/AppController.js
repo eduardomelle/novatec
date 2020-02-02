@@ -28,6 +28,23 @@ const AppController = {
             err.status = 401
             next(err)
         }
+    },
+
+    verifyJwt(request, response, next) {
+        const token = request.headers['x-jwt'] || request.query.token
+        
+        try {
+            const payload = jwt.decode(token, SECRET)
+
+            if (payload.validUntil <= new Date()) {
+                return next()
+            }
+        } catch(e) {
+            let err = new Error('saia daqui')
+            err.stack = 401
+
+            next(err)
+        }
     }
 }
 
