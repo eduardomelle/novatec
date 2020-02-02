@@ -1,6 +1,9 @@
 const jwt = require('jwt-simple')
 const SECRET = 'garrafa de agua'
 
+const axios = require('axios')
+const cheerio = require('cheerio')
+
 const AppController = {
     index(request, response, next) {
         response.status(201).send('Hello Eduardo!')
@@ -31,20 +34,32 @@ const AppController = {
     },
 
     verifyJwt(request, response, next) {
-        const token = request.headers['x-jwt'] || request.query.token
-        
+        let token = request.headers.authorization || request.headers['x-jwt'] || request.query.token
+        token = token.replace('Bearer ', '')
+        console.log('TOKEN => ' + token)
+
         try {
             const payload = jwt.decode(token, SECRET)
-
-            if (payload.validUntil <= new Date()) {
+            if (new Date(payload.validUntil) >= new Date()) {
                 return next()
             }
-        } catch(e) {
-            let err = new Error('saia daqui')
-            err.stack = 401
 
-            next(err)
+            throw new Error('saia daqui')
+        } catch(e) {
+            e.stack = 401
+            next(e)
         }
+    },
+
+    crawler(request, response, next) {
+        axios.get('https://economia.uol.com.br/cotacoes/cambio/')
+        .then(result => {
+            const s = cheerio.load(result.data)
+            
+            console.log(s('section.currencies').text)
+
+            response.send(result.data)
+        })
     }
 }
 

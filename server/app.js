@@ -13,7 +13,7 @@ app.use((request, response, next) => {
     next(err)
 })
 
-app.use((request, response, next) => {
+app.use((err, request, response, next) => {
     response.status(err.status || 500).send(err.message)
     if (err.status !== 404) console.log(err.stack)
 })
