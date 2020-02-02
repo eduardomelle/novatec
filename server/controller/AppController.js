@@ -108,6 +108,10 @@ const AppController = {
 
             next()
         })
+    },
+
+    ajax(request, response, next) {
+        
     }
 }
 

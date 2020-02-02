@@ -6,12 +6,8 @@ const BookController = require('../controller/BookController')
 router.get('/', AppController.index)
 router.post('/login', AppController.login)
 router.get('/crawler', AppController.fromRedis, AppController.crawler)
+router.get('/ajax', AppController.ajax)
 
-// router.get('/books', AppController.verifyJwt, AppController.getPersonRedis, BookController.list)
-router.get('/books', BookController.list)
-router.get('/books/:id', BookController.byId)
-router.post('/books', BookController.create)
-router.put('/books/:id', BookController.update)
-router.delete('/books/:id', BookController.remove)
+router.use('/books', require('./books'))
 
 module.exports = router

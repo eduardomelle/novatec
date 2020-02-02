@@ -1,9 +1,19 @@
 const db = require('../config/mongo')
+const SIZE = 5
 
 const BookRepository = {
 
-    find(query, callback) {
-        db.collection('books').find(query, callback)
+    find(query, page = 1, callback) {
+        if (page == '' || page == 0) {
+            page = 1
+        } 
+
+        const skip = (page - 1) * SIZE
+        
+        db.collection('books')
+            .find(query)
+            .limit(SIZE)
+            .skip(skip, callback)
     },
 
     count(query, callback) {

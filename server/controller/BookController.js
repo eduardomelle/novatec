@@ -35,7 +35,7 @@ const BookController = {
 
        Promise.all([
            repository.countAsync(query),
-           repository.findAsync(query)
+           repository.findAsync(query, request.query.page)
         ])
         .then(([total, items]) => response.json({
             total,
