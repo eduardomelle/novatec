@@ -5,7 +5,7 @@ const BookController = require('../controller/BookController')
 
 router.get('/', AppController.index)
 router.post('/login', AppController.login)
-router.get('/crawler', AppController.crawler)
+router.get('/crawler', AppController.fromRedis, AppController.crawler)
 
 router.get('/books', AppController.verifyJwt, BookController.list)
 router.get('/books/:id', BookController.byId)

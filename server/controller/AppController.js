@@ -4,6 +4,8 @@ const SECRET = 'garrafa de agua'
 const axios = require('axios')
 const cheerio = require('cheerio')
 
+const redis = require('../config/redis')
+
 const AppController = {
     index(request, response, next) {
         response.status(201).send('Hello Eduardo!')
@@ -25,6 +27,9 @@ const AppController = {
             }
 
             const token = jwt.encode(payload, SECRET)
+
+            redis.set('token', token, 'EX', 60)
+
             response.json({ token })
         } else {
             let err = new Error('saia daqui')
@@ -59,8 +64,9 @@ const AppController = {
 
             response.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' })
 
-            response.write('<table border=1>')
-            response.write(`<tr>
+            let html = ''
+            html += ('<table border=1>')
+            html += (`<tr>
                     <th>Nome</th>
                     <th>Preços</th>
                 </tr>`)
@@ -69,13 +75,25 @@ const AppController = {
                 const $price = $($($showcaseItem[i]).find('.item-price-value')).text()
                 const $name = $($($showcaseItem[i]).find('.showcase-item-name')).text()
 
-                response.write(`<tr>
+                html += (`<tr>
                         <td>${$name}</td>
                         <td>${$price}</td>
                     </tr>`)
             }
-            
-            response.end('</table>')
+
+            html += '</table>'
+
+            redis.set('emelle:blz:price', html, 'EX', 60)
+
+            response.end(html)
+        })
+    },
+
+    fromRedis(request, response, next) {
+        redis.get('emelle:blz:price', (err, data) => {
+            if (data) return response.send(data)
+
+            next()
         })
     }
 }
